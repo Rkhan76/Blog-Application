@@ -12,7 +12,7 @@ const blogRoute = require('./routes/blog')
 const app = express()
 const port = 3000
 
-// Move the MongoDB connection above middleware setup
+
 mongoose
   .connect('mongodb://127.0.0.1:27017/blogify')
   .then(() => {
@@ -30,7 +30,8 @@ mongoose
     app.use('/blog', blogRoute)
 
     app.get('/', async (req, res) => {
-      const allBlogs = await Blog.find({})
+      console.log(req.user)
+      const allBlogs = await Blog.find({ createdBy : req.user})
       res.render('home', { user: req.user, blogs: allBlogs })
     })
 
